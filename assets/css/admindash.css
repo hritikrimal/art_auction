@@ -1,0 +1,77 @@
+/* Reset some default styles */
+body,
+h1,
+h2,
+ul {
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	font-family: Arial, sans-serif;
+}
+
+/* Header Styles */
+header {
+	background-color: #333;
+	color: #fff;
+	padding: 20px;
+	text-align: center;
+}
+
+/* Container Styles */
+.container {
+	display: flex;
+	flex-wrap: wrap;
+	padding: 20px;
+}
+
+/* Sidebar Styles */
+.sidebar {
+	background-color: #333;
+	color: #fff;
+	width: 250px;
+	min-height: 100vh;
+	padding: 20px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar ul {
+	list-style-type: none;
+	padding: 0;
+}
+
+.sidebar ul li {
+	margin-bottom: 10px;
+}
+
+.sidebar ul li a {
+	color: #fff;
+	text-decoration: none;
+	display: block;
+}
+
+/* Main Content Styles */
+.main-content {
+	flex: 1;
+	background-color: #f4f4f4;
+	padding: 20px;
+}
+
+/* Responsive Layout */
+@media screen and (max-width: 768px) {
+	.container {
+		flex-direction: column-reverse;
+	}
+
+	.sidebar {
+		width: 100%;
+		padding: 10px;
+		text-align: center;
+		box-shadow: none;
+	}
+
+	.main-content {
+		padding: 10px;
+	}
+}

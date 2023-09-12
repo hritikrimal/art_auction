@@ -1,0 +1,13 @@
+body {
+	background-color: aliceblue;
+}
+.container-fluid {
+	background-color: darkturquoise;
+}
+.navbar-nav .nav-item:hover .nav-link {
+	background-color: #f8f9fa; /* Change to your preferred hover background color */
+	color: #000; /* Change to your preferred hover text color */
+}
+.navbar-nav .nav-item .nav-link {
+	margin: 0 20px;
+}
