@@ -17,7 +17,7 @@ class Buyer_dashboard extends CI_Controller
     {
 
         // $this->load->view('homepage/header');
-        $this->load->view('dashboard/buyerdash');
+        $this->load->view('buyer_dashboard/buyerdash');
         // $this->load->view('homepage/footer');
     }
 }

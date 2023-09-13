@@ -1,8 +1,10 @@
 
+
+
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Admin_dashboard extends CI_Controller
+class Seller_dashboard extends CI_Controller
 {
     public function __construct()
     {
@@ -16,7 +18,7 @@ class Admin_dashboard extends CI_Controller
     {
 
         // $this->load->view('homepage/header');
-        $this->load->view('dashboard/admindash');
+        $this->load->view('seller_dashboard/sellerdash');
         // $this->load->view('homepage/footer');
     }
 }

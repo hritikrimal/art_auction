@@ -81,10 +81,12 @@ class Userlogin extends CI_Controller
                     $this->session->set_userdata('firstname', $user->firstname);
                     $this->session->set_userdata('lastname', $user->lastname);
                     // Check the user's art type
-                    if ($user->usertype == 'admin' || $user->usertype == 'Seller') {
-                        $response['url'] = base_url('Admin_dashboard');
+                    if ($user->usertype == 'admin') {
+                        $response['url'] = base_url('admin_dash/Admin_dashboard');
                     } elseif ($user->usertype == 'Buyer') {
                         $response['url'] = base_url('Buyer_dashboard');
+                    } elseif ($user->usertype == 'Seller') {
+                        $response['url'] = base_url('Seller_dashboard');
                     } else {
                         $response['success'] = false;
                         $response['message'] = "Invalid user type";
