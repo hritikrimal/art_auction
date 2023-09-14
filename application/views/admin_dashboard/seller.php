@@ -61,7 +61,7 @@
         // fetch data from database
         function fetch() {
             $.ajax({
-                url: "<?php echo base_url() . 'admin_dash/Admin_buyer/fetch' ?>",
+                url: "<?php echo base_url() . 'admin_dash/Admin_seller/fetch' ?>",
                 dataType: "json",
                 type: "get",
                 success: function(response) {
@@ -111,7 +111,7 @@
 
             // Perform an AJAX request to update the status in the database
             $.ajax({
-                url: "<?php echo base_url() . 'admin_dash/Admin_buyer/updateStatus' ?>",
+                url: "<?php echo base_url() . 'admin_dash/Admin_seller/updateStatus' ?>",
                 dataType: "json",
                 type: "post",
                 data: {
