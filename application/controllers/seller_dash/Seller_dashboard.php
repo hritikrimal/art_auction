@@ -17,8 +17,8 @@ class Seller_dashboard extends CI_Controller
     public function index()
     {
 
-        // $this->load->view('homepage/header');
+        $this->load->view('seller_dashboard/header');
         $this->load->view('seller_dashboard/sellerdash');
-        // $this->load->view('homepage/footer');
+        $this->load->view('homepage/footer');
     }
 }

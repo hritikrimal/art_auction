@@ -12,7 +12,6 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.min.js" integrity="sha384-Rx+T1VzGupg4BHQYs2gCW9It+akI2MM/mndMCy36UVfodzcJcF0GGLxZIzObiEfa" crossorigin="anonymous"></script>
 
-
     <script src="<?php echo base_url('assets/bootstrap/jquery/jquery-3.6.4.min.js'); ?>"></script>
 
 
@@ -32,42 +31,26 @@
                 <ul class="navbar-nav">
                     <div class="row align-items-center">
                         <div class="col-lg-3 col-md-3 logo-head">
-                            <a class="navbar-brand" href="<?php echo base_url('admin_dash/Admin_dashboard'); ?>">
+                            <a class="navbar-brand" href="<?php echo base_url('seller_dash/Seller_dashboard'); ?>">
                                 <img src="../assets/image/logo.png" height="45 alt=" art">
-                                Fotheby Art Gallery
+                                <?php echo $this->session->userdata('firstname'); ?> <?php echo $this->session->userdata('lastname'); ?></h1>
                             </a>
                         </div>
                     </div>
                     <li class="nav-item active">
-                        <a class="nav-link" href="<?php echo base_url('admin_dash/Admin_dashboard'); ?>"><b>Home</b> <span class="sr-only"></span></a>
+                        <a class="nav-link" href="<?php echo base_url('seller_dash/Seller_dashboard'); ?>"><b>Home</b> <span class="sr-only"></span></a>
 
                     </li>
                     <li class="nav-item">
-                        <a href="<?php echo base_url('admin_dash/Admin_buyer'); ?>" class="nav-link"><b>Buyer</b></a>
+                        <a href="<?php echo base_url('seller_dash/My_art'); ?>" class="nav-link"><b>My avilable Art</b></a>
 
                     </li>
                     <li class="nav-item">
-                        <a href="<?php echo base_url('admin_dash/Admin_seller'); ?>" class="nav-link"><b>Seller</b></a>
+                        <a href="<?php echo base_url('seller_dash/My_sold'); ?>" class="nav-link"><b>My Sold Art</b></a>
 
                     </li>
-                    <!-- <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="artDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <b>Art</b>
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="artDropdown">
-                            <a class="dropdown-item" href="<?php echo base_url('Arttype/sold'); ?>">Sold</a>
-                            <a class="dropdown-item" href="<?php echo base_url('Arttype/expired'); ?>">Expired</a>
-                        </div>
-                    </li> -->
-                    <li class="nav-item">
-                        <a href="<?php echo base_url('admin_dash/Admin_art'); ?>" class="nav-link"><b>Art</b></a>
 
-                    </li>
-                    <li class="nav-item">
-                        <!-- <a href="contact.php" class="nav-link"><b>Contact</b></a> -->
-                        <a href="<?php echo base_url('admin_dash/Admin_order'); ?>" class="nav-link"><b>Order</b></a>
 
-                    </li>
                     <!-- TODO: user login and registration -->
                     <li class="nav-item">
                         <!-- <a href="admin/login.php" class="nav-link"><b>Admin</b></a> -->

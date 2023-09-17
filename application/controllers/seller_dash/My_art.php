@@ -1,38 +1,83 @@
 
 
+
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Admin_art extends CI_Controller
+class My_art extends CI_Controller
 {
     public function __construct()
     {
         parent::__construct();
-        $this->load->model("admin_dash_model/Admin_art_model");
+        $this->load->model("seller_dash_model/My_art_model");
 
-        if ($this->session->userdata('usertype') == '') {
-            redirect(base_url() . 'Userlogin');
+
+        if ($this->session->userdata('login') != '') {
+            redirect(base_url() . 'dashboard');
         }
     }
-    // view page
+
     public function index()
     {
-
-        $this->load->view('admin_dashboard/header');
-        $this->load->view('admin_dashboard/art');
+        $this->load->view('seller_dashboard/header');
+        $this->load->view('seller_dashboard/avvilable_art');
         $this->load->view('homepage/footer');
+    }
+    public function store_art()
+    {
+        $userid = $this->input->post('userid');
+        $title = $this->input->post('title');
+
+
+        $image = $_FILES['image'];
+        $image_path = 'uploads/' . $image['name'];
+        move_uploaded_file($image['tmp_name'], $image_path);
+
+
+        $data = array(
+            'User_id' => $userid,
+            'Title' => $title,
+            'Image' => $image_path,
+            'Size' => $this->input->post('Size'),
+            'Status' => 'available',
+            'Shipping_status' => 'processing',
+            'Classification' => $this->input->post('Classification'),
+            'Artist' => $this->input->post('Artist'),
+            'ArtType' => $this->input->post('ArtType'),
+            'ArtMedium' => $this->input->post('ArtMedium'),
+            'Dimension' => $this->input->post('Dimension'),
+            'Price' => $this->input->post('Price'),
+            'ArtProduce' => $this->input->post('ProduceDate'),
+            'Description' => $this->input->post('Description'),
+            'StartDate' => $this->input->post('StartDate'),
+            'StartTime' => $this->input->post('StartTime'),
+            'EndDate' => $this->input->post('EndDate'),
+            'EndTime' => $this->input->post('EndTime'),
+        );
+
+
+        $inserted_id = $this->My_art_model->insert_art($data);
+
+        $response = array();
+        if ($inserted_id) {
+            $response['success'] = true;
+        } else {
+            $response['success'] = false;
+        }
+
+        echo json_encode($response);
     }
     public function fetch()
     {
-        $data = $this->Admin_art_model->getall_artproduct();
-        // var_dump($data);
+        $userid = $this->input->get('userid');
+        $data = $this->My_art_model->getall_artproduct($userid);
         echo json_encode($data);
     }
     public function del()
     {
         $del_id = $this->input->post('del_id');
 
-        $image_path = $this->Admin_art_model->delete_artproducrt($del_id);
+        $image_path = $this->My_art_model->delete_artproducrt($del_id);
         // var_dump($image_path);
         if ($image_path) {
             // Delete the file from the 'uploads' folder
@@ -45,7 +90,7 @@ class Admin_art extends CI_Controller
     {
         $edit_id = $this->input->post('edit_id');
 
-        $data = $this->Admin_art_model->edit_art_product($edit_id);
+        $data = $this->My_art_model->edit_art_product($edit_id);
 
         echo json_encode($data);
     }
@@ -102,7 +147,7 @@ class Admin_art extends CI_Controller
             'EndTime' => $this->input->post('EndTime'),
         );
 
-        $update_result = $this->Admin_art_model->update_art($id, $data);
+        $update_result = $this->My_art_model->update_art($id, $data);
 
         if ($update_result) {
             $response['success'] = true;
