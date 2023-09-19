@@ -134,8 +134,10 @@
                                 </div>
                                 <div class="col-md-4">
                                     <label for="startDate" class="form-label">Start Date</label>
-                                    <input type="date" class="form-control" id="startDate" name="start_date">
+                                    <input type="date" class="form-control" id="startDate" name="start_date" min="<?php echo date('Y-m-d', strtotime('+1 day')); ?>">
                                 </div>
+
+
 
                                 <div class="col-md-4">
                                     <label for="startTime" class="form-label">Start Time</label>
@@ -146,7 +148,32 @@
                                     <label for="endDate" class="form-label">End Date</label>
                                     <input type="date" class="form-control" id="endDate" name="end_date">
                                 </div>
+                                <script>
+                                    document.addEventListener('DOMContentLoaded', function() {
+                                        var startDateInput = document.getElementById('startDate');
+                                        var endDateInput = document.getElementById('endDate');
 
+                                        startDateInput.addEventListener('change', function() {
+                                            // Set the minimum date for the end date input to the selected start date
+                                            endDateInput.min = this.value;
+
+                                            // Reset the end date value if it's less than the new minimum date
+                                            if (endDateInput.value < this.value) {
+                                                endDateInput.value = this.value;
+                                            }
+                                        });
+
+                                        // Prevent selecting previous dates in the end date input
+                                        endDateInput.addEventListener('input', function() {
+                                            var selectedEndDate = new Date(this.value);
+                                            var selectedStartDate = new Date(startDateInput.value);
+
+                                            if (selectedEndDate < selectedStartDate) {
+                                                this.value = startDateInput.value;
+                                            }
+                                        });
+                                    });
+                                </script>
                                 <div class="col-md-4">
                                     <label for="endTime" class="form-label">End Time</label>
                                     <input type="time" class="form-control" id="endTime" name="end_time">
@@ -271,7 +298,9 @@
                                 </div>
                                 <div class="col-md-4">
                                     <label for="startDate" class="form-label">Start Date</label>
-                                    <input type="date" class="form-control" id="e_startDate" name="e_start_date">
+                                    <input type="date" class="form-control" id="e_startDate" name="e_start_date" min="<?php echo date('Y-m-d', strtotime('+1 day')); ?>">
+
+
                                 </div>
 
                                 <div class="col-md-4">
@@ -283,7 +312,32 @@
                                     <label for="endDate" class="form-label">End Date</label>
                                     <input type="date" class="form-control" id="e_endDate" name="e_end_date">
                                 </div>
+                                <script>
+                                    document.addEventListener('DOMContentLoaded', function() {
+                                        var startDateInput = document.getElementById('e_startDate'); // Updated ID
+                                        var endDateInput = document.getElementById('e_endDate'); // Updated ID
 
+                                        startDateInput.addEventListener('change', function() {
+                                            // Set the minimum date for the end date input to the selected start date
+                                            endDateInput.min = this.value;
+
+                                            // Reset the end date value if it's less than the new minimum date
+                                            if (endDateInput.value < this.value) {
+                                                endDateInput.value = this.value;
+                                            }
+                                        });
+
+                                        // Prevent selecting previous dates in the end date input
+                                        endDateInput.addEventListener('input', function() {
+                                            var selectedEndDate = new Date(this.value);
+                                            var selectedStartDate = new Date(startDateInput.value);
+
+                                            if (selectedEndDate < selectedStartDate) {
+                                                this.value = startDateInput.value;
+                                            }
+                                        });
+                                    });
+                                </script>
                                 <div class="col-md-4">
                                     <label for="endTime" class="form-label">End Time</label>
                                     <input type="time" class="form-control" id="e_endTime" name="e_end_time">
@@ -310,6 +364,7 @@
 
         });
         $(document).ready(function() {
+
             $("#addArtProduct").click(function() {
                 // Get form data
                 var userid = $("#user_id").val();
@@ -585,6 +640,7 @@
 
                 });
             });
+
 
         });
     </script>

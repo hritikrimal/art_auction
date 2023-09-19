@@ -86,7 +86,7 @@ class Userlogin extends CI_Controller
                     if ($user->usertype == 'admin') {
                         $response['url'] = base_url('admin_dash/Admin_dashboard');
                     } elseif ($user->usertype == 'Buyer') {
-                        $response['url'] = base_url('Buyer_dashboard');
+                        $response['url'] = base_url('buyer_dash/Buyer_dashboard');
                     } elseif ($user->usertype == 'Seller') {
                         $response['url'] = base_url('seller_dash/Seller_dashboard');
                     } else {
