@@ -1,4 +1,67 @@
 <style>
+    /* Style for the modal content */
+    .modal-content {
+        border: none;
+    }
+
+    /* Style for the modal header */
+    .modal-header {
+        background-color: #007BFF;
+        color: #fff;
+        border: none;
+    }
+
+    /* Style for modal title */
+    .modal-title {
+        font-size: 24px;
+        font-weight: bold;
+    }
+
+    /* Style for close button */
+    .btn-close {
+        color: #fff;
+    }
+
+    /* Style for modal body */
+    .modal-body {
+        padding: 20px;
+    }
+
+    /* Style for product image */
+    #product_image {
+        max-height: 400px;
+        max-width: 100%;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+
+    /* Style for product details */
+    #product_title {
+        font-size: 24px;
+        font-weight: bold;
+    }
+
+    /* Style for other product details */
+    #product_artist,
+    #product_classification,
+    #product_art_medium,
+    #product_art_type,
+    #product_size,
+    #product_dimension,
+    #product_start_date,
+    #product_end_date,
+    #product_price {
+        font-size: 16px;
+        color: #333;
+        margin-bottom: 10px;
+    }
+
+    /* Style for description */
+    #product_description {
+        font-size: 16px;
+        color: #555;
+    }
+
     /* Styling for card container */
     #card-container {
         display: flex;
@@ -51,23 +114,50 @@
             <!-- Cards will be dynamically added here -->
         </div>
         <!-- model -->
-        <div class="modal fade" id="product_Modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
+        <div class="modal fade" id="product_Modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">Product Details</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        ...
+                        <div class="row">
+                            <div class="col-md-6">
+                                <img src="" alt="Product Image" id="product_image" class="img-fluid">
+                            </div>
+                            <div class="col-md-6">
+                                <input type="number" id="id" style="display: none;">
+                                <input type="number" id="user_ids" style="display: none;">
+                                <h4 id="product_title"></h4>
+                                <p><strong>Artist:</strong> <span id="product_artist"></span></p>
+                                <p><strong>Classification:</strong> <span id="product_classification"></span></p>
+                                <p><strong>Art Medium:</strong> <span id="product_art_medium"></span></p>
+                                <p><strong>Art Type:</strong> <span id="product_art_type"></span></p>
+                                <p><strong>Size:</strong> <span id="product_size"></span></p>
+                                <p><strong>Dimension:</strong> <span id="product_dimension"></span></p>
+                                <p><strong>Start Date:</strong> <span id="product_start_date"></span></p>
+                                <p><strong>End Date:</strong> <span id="product_end_date"></span></p>
+                                <p><strong>Price:</strong> <span id="product_price"></span></p>
+                                <p><strong>Higest Bidding Price:</strong> <span id="heighest_price"></span></p>
+                                <input type="number" class="form-control" id="bid_amount" placeholder="Enter your bid amount">
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h4>Description</h4>
+                                <p id="product_description"></p>
+                            </div>
+                        </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Save changes</button>
+                        <button type="button" class="btn btn-primary" id="process">Process</button>
                     </div>
                 </div>
             </div>
         </div>
+
     </div>
     <script>
         $(document).ready(function() {
@@ -93,28 +183,45 @@
                                     $("<h5>").addClass("card-title").text(item.Title),
                                     $("<p>").addClass("card-text").text("Size: " + item.Size),
                                     $("<p>").addClass("card-text").text("Price: " + item.Price),
-                                    $("<p>").addClass("card-text").text("Art Produce Date: " + item.ArtProduce),
-                                    $("<button>").addClass("btn btn-primary").text("Buy").attr("product_id", item.id)
+                                    $("<p>").addClass("card-text").text("Auction End Date: " + item.EndDate + ' ' + item.EndTime),
+                                    $("<button>").addClass("btn btn-primary").attr("disabled", true).attr("product_id", item.id)
                                 )
                             );
 
-                            // Check if the end date and time have passed
-                            var endDate = new Date(item.EndDate + ' ' + item.EndTime);
-                            var now = new Date();
-                            if (endDate < now) {
-                                cardBody.find("button").text("Expired").attr("disabled", true);
-                            }
-
                             cardContainer.append(card.append(cardBody));
+                            // Start countdown only if StartDate and StartTime are in the future
+                            startCountdown(item.StartDate, item.StartTime, card.find("button"), card);
                         });
 
                         // Initialize DataTable on the cardContainer
-                        cardContainer.DataTable();
+                        // cardContainer.DataTable();
                     }
                 });
             }
 
             fetch();
+            //   countdown
+            function startCountdown(startDate, startTime, button, card) {
+                var countdownInterval = setInterval(function() {
+                    var now = new Date();
+                    var eventTime = new Date(startDate + ' ' + startTime);
+                    var timeRemaining = eventTime - now;
+
+                    if (timeRemaining <= 0) {
+                        // Event has started, clear the interval and update the button
+                        clearInterval(countdownInterval);
+                        button.text("Buy").removeAttr("disabled");
+                    } else {
+                        // Calculate hours, minutes, and seconds from timeRemaining
+                        var hours = Math.floor((timeRemaining / (1000 * 60 * 60)) % 24);
+                        var minutes = Math.floor((timeRemaining / 1000 / 60) % 60);
+                        var seconds = Math.floor((timeRemaining / 1000) % 60);
+
+                        // Update the countdown element
+                        button.text("Start Bidding in: " + hours + "h " + minutes + "m " + seconds + "s");
+                    }
+                }, 1000); // Update every 1 second
+            }
             $(document).on("click", "button.btn-primary", function() {
                 // Check if the session is empty (assuming your session variable is called "user_id")
                 if (!$("#user_id").val()) {
@@ -124,10 +231,81 @@
                     // Session is not empty, continue with the rest of the code
                     var product_id = $(this).attr("product_id");
                     // alert(product_id);
-                    $("#product_Modal").modal("show");
+                    $.ajax({
+                        url: "<?php echo base_url() . 'buyer_dash/Avilable_art/view'; ?>",
+                        type: 'post',
+                        dataType: 'json',
+                        data: {
+                            product_id: product_id
+                        },
+                        success: function(data) {
+                            console.log(data);
+
+                            // Access product data
+                            var productData = data.product[0];
+                            $("#id").val(productData.id);
+                            $("#user_ids").val(productData.User_id);
+                            $("#product_title").text(productData.Title);
+                            $("#product_artist").text(productData.Artist);
+                            $("#product_classification").text(productData.Classification);
+                            $("#product_art_medium").text(productData.ArtMedium);
+                            $("#product_art_type").text(productData.ArtType);
+                            $("#product_size").text(productData.Size);
+                            $("#product_dimension").text(productData.Dimension);
+                            $("#product_start_date").text(productData.StartDate);
+                            $("#product_end_date").text(productData.EndDate);
+                            $("#product_price").text(productData.Price);
+                            $("#product_description").text(productData.Description);
+                            $("#product_image").attr("src", "../" + productData.Image);
+
+                            // Access highest bid data
+                            var highestBidData = data.highest_bid[0];
+                            if (highestBidData) {
+                                $("#heighest_price").text(highestBidData.highest_bid);
+                            } else {
+                                $("#heighest_price").text("No bids yet");
+                            }
+
+                            $("#product_Modal").modal("show");
+                        },
+                    });
+
+
                 }
+            });
+
+            $(document).on("click", "#process", function() {
+
+                var product_id = $("#id").val();
+
+
+                var user_id = $("#user_id").val();
+                // alert(user_id);
+                var bid_amount = $("#bid_amount").val();
+
+                if (bid_amount == "") {
+                    alert("Please insert yoyr Bidding Price");
+                    return;
+                }
+
+                $.ajax({
+                    url: "<?php echo base_url() . 'buyer_dash/Avilable_art/insert_order' ?>",
+                    dataType: "json",
+                    type: 'POST',
+                    data: {
+                        user_id: user_id,
+                        product_id: product_id,
+                        bid_amount: bid_amount
+
+                    },
+                    success: function(response) {
+
+                        $("#product_Modal").modal("hide");
+                        window.location.href = "<?php echo base_url() ?>buyer_dash/My_order";
+                    },
+
+                });
             });
         });
     </script>
-
 </body>
