@@ -19,7 +19,7 @@ class Arttype extends CI_Controller
         $this->load->view('homepage/arttype');
         $this->load->view('homepage/footer');
     }
-    public function fetch($userid)
+    public function fetch()
     {
         $userid = $this->input->get('userid');
         $data = $this->Arttype_model->getall_artproduct($userid);

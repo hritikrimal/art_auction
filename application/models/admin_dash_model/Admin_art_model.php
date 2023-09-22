@@ -8,7 +8,7 @@ class Admin_art_model extends CI_Model
     {
         parent::__construct();
     }
-    public function getall_artproduct($userid)
+    public function getall_artproduct()
     {
         $this->db->select('*');
         $this->db->from('artproduct');

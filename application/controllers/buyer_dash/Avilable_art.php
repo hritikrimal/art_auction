@@ -24,14 +24,14 @@ class Avilable_art extends CI_Controller
         $this->load->view('buyer_dashboard/avilable');
         $this->load->view('homepage/footer');
     }
-    public function fetch($userid)
+    public function fetch()
     {
         $userid = $this->input->get('userid');
         $data = $this->Avilable_art_model->getall_artproduct($userid);
         echo json_encode($data);
     }
 
-    public function fetch_order($userid)
+    public function fetch_order()
     {
         $userid = $this->input->get('userid');
         $datas = $this->Avilable_art_model->getall_artorder($userid);
