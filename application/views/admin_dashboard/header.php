@@ -68,6 +68,11 @@
                         <a href="<?php echo base_url('admin_dash/Admin_order'); ?>" class="nav-link"><b>Order</b></a>
 
                     </li>
+                    <li class="nav-item">
+                        <!-- <a href="contact.php" class="nav-link"><b>Contact</b></a> -->
+                        <a href="<?php echo base_url('admin_dash/Admin_report'); ?>" class="nav-link"><b>Report</b></a>
+
+                    </li>
                     <!-- TODO: user login and registration -->
                     <li class="nav-item">
                         <!-- <a href="admin/login.php" class="nav-link"><b>Admin</b></a> -->

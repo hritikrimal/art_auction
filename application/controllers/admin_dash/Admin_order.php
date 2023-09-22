@@ -27,4 +27,25 @@ class Admin_order extends CI_Controller
         $data = $this->Admin_order_model->get_orders();
         echo json_encode($data);
     }
+    public function insert_sold()
+    {
+        $order_id = $this->input->post('order_id');
+        // var_dump($order_id);
+        // Update the 'order' table to set the status to 'delivered'
+        $result = $this->Admin_order_model->updateOrderStatus($order_id);
+
+        // Update the 'artproduct' table to set the status to 'sold'
+        if ($result) {
+            $success = $this->Admin_order_model->updateArtProductStatus($result);
+
+            // Return a response to the AJAX call
+            if ($success) {
+                echo json_encode(array('success' => true));
+            } else {
+                echo json_encode(array('success' => false));
+            }
+        } else {
+            echo json_encode(array('success' => false));
+        }
+    }
 }

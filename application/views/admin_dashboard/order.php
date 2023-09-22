@@ -1,3 +1,8 @@
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+
+<!-- DataTables JavaScript -->
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
+
 <div class="container mt-5">
     <div class="row">
 
@@ -37,9 +42,21 @@
                     var i = 1; // Initialize the counter
                     var now = new Date(); // Get the current date and time
 
+                    // Group responses by product_id and find the highest bid amount
+                    var highestBidByProductId = {};
+                    for (var key in response) {
+                        var productId = response[key]['product_id'];
+                        var bidAmount = parseFloat(response[key]['bid_amount']);
+
+                        if (!(productId in highestBidByProductId) || bidAmount > highestBidByProductId[productId]) {
+                            highestBidByProductId[productId] = bidAmount;
+                        }
+                    }
+
                     for (var key in response) {
                         var endDate = new Date(response[key]['EndDate']);
                         var endTime = new Date(response[key]['EndTime']);
+                        var bidAmount = parseFloat(response[key]['bid_amount']); // Move this line here
 
                         tbody += "<tr>";
                         tbody += "<td>" + i++ + "</td>"; // Increment the counter
@@ -47,34 +64,56 @@
                         tbody += "<td><img src='../" + response[key]['Image'] + "' height='100px' width='100px'></td>";
                         tbody += "<td>" + response[key]['Title'] + "</td>";
                         tbody += "<td>" + response[key]['Size'] + "</td>";
-                        tbody += "<td>" + response[key]['bid_amount'] + "</td>";
+                        tbody += "<td>" + bidAmount + "</td>";
                         tbody += "<td>" + response[key]['ArtProduce'] + "</td>";
 
-                        // Compare "EndDate" and "EndTime" with the current date and time
-                        if (endDate > now || (endDate.getTime() === now.getTime() && endTime > now)) {
-                            // EndDate and EndTime are in the future or equal to current time, button is disabled
+                        // Compare the current bid amount with the highest bid amount for the same product_id
+                        if (bidAmount === highestBidByProductId[response[key]['product_id']]) {
+                            // This is the highest bid amount for this product_id, show the button
                             tbody += `<td>
-                            <div class="d-flex">
-                                <button class="btn btn-primary btn-sm m-1" disabled>Confirm</button>
-                            </div>
-                        </td>`;
+                        <div class="d-flex">
+                            <a href="#" id="edit" class="btn btn-primary btn-sm m-1" value="${response[key]['order_id']}">Confirm</a>
+                        </div>
+                    </td>`;
                         } else {
-                            // EndDate and EndTime have passed, button is enabled
-                            tbody += `<td>
-                            <div class="d-flex">
-                                <a href="#" id="edit" class="btn btn-primary btn-sm m-1" value="${response[key]['id']}">Confirm</a>
-                            </div>
-                        </td>`;
+                            // Hide the button for lower bid amounts
+                            tbody += `<td></td>`;
                         }
 
                         tbody += "</tr>";
                     }
                     $("#tbody").html(tbody);
+                    $("#myTable").DataTable();
+
                 }
             });
         }
 
         fetch();
+
+        $(document).on("click", "#edit", function() {
+            alert();
+            var button = $(this); // Store the button element
+
+            var order_id = button.attr('value');
+
+            $.ajax({
+                url: "<?php echo base_url() . 'admin_dash/Admin_order/insert_sold'; ?>",
+                type: 'post',
+                dataType: 'json',
+                data: {
+                    order_id: order_id
+                },
+                success: function(response) {
+                    if (response.success) {
+                        // Reload the current page
+                        location.reload();
+                    } else {
+                        alert("Error updating order and product status");
+                    }
+                }
+            });
+        });
     });
 </script>
 </body>

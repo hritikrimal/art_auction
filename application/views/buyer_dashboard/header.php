@@ -45,8 +45,8 @@
                         </a>
                         <div class="dropdown-menu" aria-labelledby="artDropdown">
                             <a class="dropdown-item" href="<?php echo base_url('buyer_dash/Avilable_art'); ?>">Avilable</a>
-                            <a class="dropdown-item" href="<?php echo base_url('Arttype/Sold_art'); ?>">Sold</a>
-                            <a class="dropdown-item" href="<?php echo base_url('Arttype/Expired_art'); ?>">Expired</a>
+                            <a class="dropdown-item" href="<?php echo base_url('buyer_dash/Sold_art'); ?>">Sold</a>
+                            <a class="dropdown-item" href="<?php echo base_url('buyer_dash/Expired_art'); ?>">Expired</a>
                         </div>
                     </li>
                     </li>
@@ -55,7 +55,7 @@
 
                     </li>
                     <li class="nav-item">
-                        <a href="<?php echo base_url('buyer_dash/My_sold'); ?>" class="nav-link"><b>My Collection</b></a>
+                        <a href="<?php echo base_url('buyer_dash/My_colls'); ?>" class="nav-link"><b>My Collection</b></a>
 
                     </li>
 
